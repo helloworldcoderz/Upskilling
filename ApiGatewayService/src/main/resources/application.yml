@@ -1,0 +1,37 @@
+server:
+  port : 8083
+spring:
+  application:
+      name: API-GATEWAY-SERVICE
+  datasource:
+    url: jdbc:h2:mem:Invdb
+    username: sa
+    password: 
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  h2:
+    console.enabled: true  
+  cloud:
+    gateway:
+      routes:
+        - id: INVENTORY-SERVICE
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/Inventory/**    
+        - id: ORDER-SERVICE
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order/**   
+eureka:
+  client:
+      register-with-eureka: true
+      fetch-registry: true
+      serviceUrl:
+         defaultZone: http://localhost:8761/eureka
+      instance:
+        hostname: localhost 
+
+
+       
